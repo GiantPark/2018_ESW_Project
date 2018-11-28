@@ -1,12 +1,12 @@
-EXEC=main
+EXEC=server
 CC=gcc
 CFLAGS=-Wall
 
-$(EXEC): main.o
-        $(CC) -o main main.o -L../lib -lmyfuncs
+$(EXEC): server.o
+	$(CC) -o server server.o -L../lib -lserverfuncs
 
 %.o: %.c
-        $(CC) -c $(CFLAGS) -I../include  $< -o $@
+	$(CC) -c $(CFLAGS) -I../include  $< -o $@ -lpthread
 
 clean:
-        rm main.o main
+	rm server.o server

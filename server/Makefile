@@ -2,14 +2,14 @@ DIRS = lib player
 .PHONY: all clean
 
 all:
-        @for d in $(DIRS); \
-        do \
-                $(MAKE) -C $$d; \
-        done
+	@for d in $(DIRS); \
+	do \
+		$(MAKE) -C $$d; \
+	done
 
 clean:
-        @for d in $(DIRS); \
-        do \
-                $(MAKE) -C $$d clean; \
-        done
+	@for d in $(DIRS); \
+	do \
+		$(MAKE) -C $$d clean; \
+	done
 

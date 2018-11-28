@@ -4,10 +4,10 @@ OUTPUT = client
 OBJFILES = client.o
 
 $(OUTPUT): $(OBJFILES)
-	$(CC) $(CFLAGS) $(OBJFILES) -o $(OUTPUT)
+	$(CC) $(CFLAGS) $(OBJFILES) -o $(OUTPUT) -L../lib -lclientfuncs
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@ -I../include
 
 clean:
 	rm *.o $(OUTPUT)

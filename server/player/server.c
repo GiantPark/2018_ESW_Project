@@ -24,12 +24,12 @@
 char *EXIT_STRING = "exit";	// 클라이언트의 종료요청 문자열
 char *START_STRING = "Connected to chat_server \n";
 // 클라이언트 환영 메시지
-int extern maxfdp1;				// 최대 소켓번호 +1
+int maxfdp1;				// 최대 소켓번호 +1
 int num_user = 0;			// 채팅 참가자 수
 int num_chat = 0;			// 지금까지 오간 대화의 수
-int extern clisock_list[MAX_SOCK];		// 채팅에 참가자 소켓번호 목록
-char extern ip_list[MAX_SOCK][20];		//접속한 ip목록
-int extern listen_sock;			// 서버의 리슨 소켓
+int clisock_list[MAX_SOCK];		// 채팅에 참가자 소켓번호 목록
+char ip_list[MAX_SOCK][20];		//접속한 ip목록
+int listen_sock;			// 서버의 리슨 소켓
 
 							// 새로운 채팅 참가자 처리
 void addClient(int s, struct sockaddr_in *newcliaddr);
@@ -38,8 +38,8 @@ void removeClient(int s);	// 채팅 탈퇴 처리 함수
 int tcp_listen(int host, int port, int backlog); // 소켓 생성 및 listen
 void errquit(char *mesg) { perror(mesg); exit(1); }
 
-time_t extern ct;
-struct tm extern tm;
+time_t ct;
+struct tm tm;
 
 int main(int argc, char *argv[]) {
 	struct sockaddr_in cliaddr;

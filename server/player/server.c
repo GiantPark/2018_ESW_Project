@@ -20,9 +20,12 @@
 //this is server C source file
 #define MAXLINE  511
 #define MAX_SOCK 1024 // 솔라리스의 경우 64
+#define MAX_ROOM 10
+#define MAX_PERSON 5
 
 char *EXIT_STRING = "exit";	// 클라이언트의 종료요청 문자열
 char *START_STRING = "Connected to chat_server \n";
+char *ROOM_STRING = "There is no room, create room plz \n";
 // 클라이언트 환영 메시지
 int maxfdp1;				// 최대 소켓번호 +1
 int num_user = 0;			// 채팅 참가자 수
@@ -30,6 +33,10 @@ int num_chat = 0;			// 지금까지 오간 대화의 수
 int clisock_list[MAX_SOCK];		// 채팅에 참가자 소켓번호 목록
 char ip_list[MAX_SOCK][20];		//접속한 ip목록
 int listen_sock;			// 서버의 리슨 소켓
+int room[MAX_ROOM][MAX_PERSON];
+int roomcnt = 0;
+int personcnt[MAX_ROOM] ={0,};
+char *room_N[MAX_ROOM];
 
 							// 새로운 채팅 참가자 처리
 void addClient(int s, struct sockaddr_in *newcliaddr);
@@ -74,6 +81,14 @@ int main(int argc, char *argv[]) {
 			if (accp_sock == -1) errquit("accept fail");
 			addClient(accp_sock, &cliaddr);
 			send(accp_sock, START_STRING, strlen(START_STRING), 0);
+			if(roomcnt == 0){
+                        	send(accp_sock, ROOM_STRING ,strlen(ROOM_STRING), 0);
+                        }
+			else{
+				for(int r=0;r<roomcnt;r++){
+					printf("%s\n",room_N[r]);
+				}
+			}
 			ct = time(NULL);			//현재 시간을 받아옴
 			tm = *localtime(&ct);
 			write(1, "\033[0G", 4);		//커서의 X좌표를 0으로 이동
@@ -87,14 +102,25 @@ int main(int argc, char *argv[]) {
 		// 클라이언트가 보낸 메시지를 모든 클라이언트에게 방송
 		for (i = 0; i < num_user; i++) {
 			if (FD_ISSET(clisock_list[i], &read_fds)) {
-				num_chat++;				//총 대화 수 증가
+				num_chat++;//총 대화 수 증가
 				nbyte = recv(clisock_list[i], buf, MAXLINE, 0);
+
+				char *temp = strtok(buf," ");
+				if(strcmp(temp,"mk")==0){
+					room[roomcnt][personcnt[roomcnt]] = clisock_list[i];
+					room_N[roomcnt] = strtok(NULL," ");
+					personcnt[roomcnt]++;
+					roomcnt++;
+				}
+				else if(strcmp(temp,"in")==0){
+
+				}
 				if (nbyte <= 0) {
 					removeClient(i);	// 클라이언트의 종료
 					continue;
 				}
 				buf[nbyte] = 0;
-				// 종료문자 처리
+					// 종료문자 처리
 				if (strstr(buf, EXIT_STRING) != NULL) {
 					removeClient(i);	// 클라이언트의 종료
 					continue;

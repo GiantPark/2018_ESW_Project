@@ -33,12 +33,12 @@ int num_chat = 0;			// 지금까지 오간 대화의 수
 int clisock_list[MAX_SOCK];		// 채팅에 참가자 소켓번호 목록
 char ip_list[MAX_SOCK][20];		//접속한 ip목록
 int listen_sock;			// 서버의 리슨 소켓
-
-int room[MAX_ROOM][MAX_PERSON] = {0,};
+int room[MAX_ROOM][MAX_PERSON];
 int roomcnt = 0;
 int personcnt[MAX_ROOM] ={0,};
-char *room_N[MAX_ROOM] = {0,};
-						// 새로운 채팅 참가자 처리
+char *room_N[MAX_ROOM];
+
+							// 새로운 채팅 참가자 처리
 void addClient(int s, struct sockaddr_in *newcliaddr);
 int getmax();				// 최대 소켓 번호 찾기
 void removeClient(int s);	// 채팅 탈퇴 처리 함수
@@ -113,7 +113,7 @@ int main(int argc, char *argv[]) {
 					roomcnt++;
 				}
 				else if(strcmp(temp,"in")==0){
-
+					
 				}
 				if (nbyte <= 0) {
 					removeClient(i);	// 클라이언트의 종료

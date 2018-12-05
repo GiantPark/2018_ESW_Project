@@ -26,6 +26,9 @@
 char *EXIT_STRING = "exit";	// 클라이언트의 종료요청 문자열
 char *START_STRING = "Connected to chat_server \n";
 char *ROOM_STRING = "There is no room, create room plz \n";
+char *ROOM_IN = "goin";
+char *ROOM_NO = "There is no such room\n";
+
 // 클라이언트 환영 메시지
 int maxfdp1;				// 최대 소켓번호 +1
 int num_user = 0;			// 채팅 참가자 수
@@ -33,21 +36,12 @@ int num_chat = 0;			// 지금까지 오간 대화의 수
 int clisock_list[MAX_SOCK];		// 채팅에 참가자 소켓번호 목록
 char ip_list[MAX_SOCK][20];		//접속한 ip목록
 int listen_sock;			// 서버의 리슨 소켓
-<<<<<<< HEAD
 int room[MAX_ROOM][MAX_PERSON]={0,};
 int roomcnt = 0;
 int personcnt[MAX_ROOM] ={0,};
-char *room_N[MAX_ROOM]={0,};
+char *room_N[MAX_ROOM]={NULL,};
 
 							// 새로운 채팅 참가자 처리
-=======
-
-int room[MAX_ROOM][MAX_PERSON] = {0,};
-int roomcnt = 0;
-int personcnt[MAX_ROOM] ={0,};
-char *room_N[MAX_ROOM] = {0,};
-						// 새로운 채팅 참가자 처리
->>>>>>> a80458faad9b27ed8c7675d6b2f89f0a594727db
 void addClient(int s, struct sockaddr_in *newcliaddr);
 int getmax();				// 최대 소켓 번호 찾기
 void removeClient(int s);	// 채팅 탈퇴 처리 함수
@@ -58,9 +52,15 @@ time_t ct;
 struct tm tm;
 
 int main(int argc, char *argv[]) {
+
+	for (int a = 0; a < MAX_ROOM; a++)
+	{
+		room_N[a] = malloc(sizeof(char) * 10);
+	}
+
 	struct sockaddr_in cliaddr;
 	char buf[MAXLINE + 1]; //클라이언트에서 받은 메시지
-	int i, j, nbyte, accp_sock, addrlen = sizeof(struct
+	int i, j, room_in_f = 0,nbyte, accp_sock, addrlen = sizeof(struct
 		sockaddr_in);
 	fd_set read_fds;	//읽기를 감지할 fd_set 구조체
 	pthread_t a_thread;
@@ -74,6 +74,7 @@ int main(int argc, char *argv[]) {
 	listen_sock = tcp_listen(INADDR_ANY, atoi(argv[1]), 5);
 	//스레드 생성
 	pthread_create(&a_thread, NULL, thread_function, (void *)NULL);
+	int PSH_CNT = 2;
 	while (1) {
 		FD_ZERO(&read_fds);
 		FD_SET(listen_sock, &read_fds);
@@ -95,7 +96,7 @@ int main(int argc, char *argv[]) {
                         }
 			else{
 				for(int r=0;r<roomcnt;r++){
-					printf("%s\n",room_N[r]);
+					printf("init_ room_N[%d]is = %s\n",r,room_N[r]);
 					send(accp_sock, room_N[r] , strlen(room_N[r]), 0);
 				}
 			}
@@ -105,6 +106,7 @@ int main(int argc, char *argv[]) {
 			printf("[%02d:%02d:%02d]", tm.tm_hour, tm.tm_min, tm.tm_sec);
 			fprintf(stderr, "\033[33m");//글자색을 노란색으로 변경
 			printf("사용자 1명 추가. 현재 참가자 수 = %d\n", num_user);
+			printf("cnt = %d\n",roomcnt);
 			fprintf(stderr, "\033[32m");//글자색을 녹색으로 변경
 			fprintf(stderr, "server>\n"); //커서 출력
 		}
@@ -115,20 +117,6 @@ int main(int argc, char *argv[]) {
 				num_chat++;//총 대화 수 증가
 				nbyte = recv(clisock_list[i], buf, MAXLINE, 0);
 
-				char *temp = strtok(buf," ");
-<<<<<<< HEAD
-				if(strcmp(temp,"mk")==0){
-					room[roomcnt][personcnt[roomcnt]] = clisock_list[i];
-					room_N[roomcnt] = strtok(NULL," ");
-					personcnt[roomcnt]++;
-					roomcnt++;
-				}
-				else if(strcmp(temp,"in")==0){
-				
-				}
-=======
-
->>>>>>> a80458faad9b27ed8c7675d6b2f89f0a594727db
 				if (nbyte <= 0) {
 					removeClient(i);	// 클라이언트의 종료
 					continue;
@@ -139,14 +127,46 @@ int main(int argc, char *argv[]) {
 					removeClient(i);	// 클라이언트의 종료
 					continue;
 				}
+				printf("buffer = %s\n",buf);
+				char *temp = strtok(buf," ");
 				if(strcmp(temp,"mk")==0){
                                         room[roomcnt][personcnt[roomcnt]] = clisock_list[i];
-                                        room_N[roomcnt] = strtok(NULL," ");
+					printf("room count = %d\n",roomcnt);
+                                        temp = strtok(NULL,"\n");
+					printf("temp is = %s and roomcnt is = %d\n",temp,roomcnt);
+					//room_N[roomcnt] = temp;
+					strcpy(room_N[roomcnt],temp);
+					printf("room_N length = %ld\n", sizeof(room_N));
+					printf("room_N[%d] = %s\n",0,room_N[0]);
+					printf("room_N[%d] = %s\n",1,room_N[1]);
+					printf("room_N[%d] = %s\n",2,room_N[2]);
+					printf("room_N[%d] = %s\n",3,room_N[3]);
                                         personcnt[roomcnt]++;
                                         roomcnt++;
+					send(clisock_list[i], ROOM_IN,strlen(ROOM_IN), 0);
+					temp = NULL;
+					continue;
                                 }
-				if(strcmp(temp,"in")==0){
-
+				else if(strcmp(temp,"in")==0){
+					temp = strtok(NULL," ");
+					for (int z =0 ; z < roomcnt ; z++)
+					{
+						printf("shebar!!!!\n");
+						if(strcmp(room_N[z],temp))
+						{
+                                        		room[z][personcnt[z]] = clisock_list[i];
+                                        		personcnt[z]++;
+							send(clisock_list[i], ROOM_IN,strlen(ROOM_IN), 0);
+							room_in_f = 1;
+							break;
+						}
+					}
+					if (!room_in_f){
+						send(clisock_list[i], ROOM_NO,strlen(ROOM_NO), 0);
+						room_in_f = 0;
+					}
+					continue;
+					//room[atoi(temp)][personcnt[(atoi(temp))]] = clisock_list[i];
                                 }
 
 
@@ -163,5 +183,9 @@ int main(int argc, char *argv[]) {
 
 	}  // end of while
 
+	for (int a = 0; a < MAX_ROOM; a++)
+	{
+		free(room_N[a]);
+	}
 	return 0;
 }

@@ -33,10 +33,10 @@ int num_chat = 0;			// 지금까지 오간 대화의 수
 int clisock_list[MAX_SOCK];		// 채팅에 참가자 소켓번호 목록
 char ip_list[MAX_SOCK][20];		//접속한 ip목록
 int listen_sock;			// 서버의 리슨 소켓
-int room[MAX_ROOM][MAX_PERSON];
+int room[MAX_ROOM][MAX_PERSON]={0,};
 int roomcnt = 0;
 int personcnt[MAX_ROOM] ={0,};
-char *room_N[MAX_ROOM];
+char *room_N[MAX_ROOM]={0,};
 
 							// 새로운 채팅 참가자 처리
 void addClient(int s, struct sockaddr_in *newcliaddr);
@@ -87,6 +87,7 @@ int main(int argc, char *argv[]) {
 			else{
 				for(int r=0;r<roomcnt;r++){
 					printf("%s\n",room_N[r]);
+					send(accp_sock, room_N[r] , strlen(room_N[r]), 0);
 				}
 			}
 			ct = time(NULL);			//현재 시간을 받아옴
@@ -113,7 +114,7 @@ int main(int argc, char *argv[]) {
 					roomcnt++;
 				}
 				else if(strcmp(temp,"in")==0){
-
+				
 				}
 				if (nbyte <= 0) {
 					removeClient(i);	// 클라이언트의 종료

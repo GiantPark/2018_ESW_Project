@@ -106,25 +106,28 @@ int main(int argc, char *argv[]) {
 				nbyte = recv(clisock_list[i], buf, MAXLINE, 0);
 
 				char *temp = strtok(buf," ");
-				if(strcmp(temp,"mk")==0){
-					room[roomcnt][personcnt[roomcnt]] = clisock_list[i];
-					room_N[roomcnt] = strtok(NULL," ");
-					personcnt[roomcnt]++;
-					roomcnt++;
-				}
-				else if(strcmp(temp,"in")==0){
 
-				}
 				if (nbyte <= 0) {
 					removeClient(i);	// 클라이언트의 종료
 					continue;
 				}
 				buf[nbyte] = 0;
-					// 종료문자 처리
+				// 종료문자 처리
 				if (strstr(buf, EXIT_STRING) != NULL) {
 					removeClient(i);	// 클라이언트의 종료
 					continue;
 				}
+				if(strcmp(temp,"mk")==0){
+                                        room[roomcnt][personcnt[roomcnt]] = clisock_list[i];
+                                        room_N[roomcnt] = strtok(NULL," ");
+                                        personcnt[roomcnt]++;
+                                        roomcnt++;
+                                }
+				if(strcmp(temp,"in")==0){
+
+                                }
+
+
 				// 모든 채팅 참가자에게 메시지 방송
 				for (j = 0; j < num_user; j++)
 					send(clisock_list[j], buf, nbyte, 0);

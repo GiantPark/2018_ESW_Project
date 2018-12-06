@@ -60,7 +60,7 @@ int main(int argc, char *argv[]) {
 				bufmsg[nbyte] = 0;
 				write(1, "\033[0G", 4);		//커서의 X좌표를 0으로 이동
 				printf("%s", bufmsg);		//메시지 출력
-				if (!strcmp(bufmsg,"goin\n")) roomflag = 1;
+				if (!strcmp(bufmsg,"goin")) roomflag = 1;
 				if (roomflag)
 				{
 					fprintf(stderr, "\033[1;32m");//글자색을 녹색으로 변경

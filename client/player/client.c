@@ -43,6 +43,14 @@ int main(int argc, char *argv[]) {
 		errquit("tcp_connect fail");
 
 	puts("서버에 접속되었습니다.");
+	fprintf(stderr, "\033[1;32m");//글자색을 녹색으로 변경
+	puts("commend list --------------");
+        puts("방 참가 : in (방 번호)");
+        puts("방 만들기 : mk (방 제목)");
+	puts("---------------------------");
+	puts("*ROBBY*");
+	fprintf(stderr, "\033[1;37m");//글자색을 white으로 변경
+	
 	maxfdp1 = s + 1;
 	FD_ZERO(&read_fds);
 
@@ -58,6 +66,7 @@ int main(int argc, char *argv[]) {
 				write(1, "\033[0G", 4);		//커서의 X좌표를 0으로 이동
 				printf("%s", bufmsg);		//메시지 출력
 				if (!strcmp(bufmsg,"goin")) roomflag = 1;
+				else if (strstr(bufmsg,"!out")!=NULL) roomflag = 0;
 				if (roomflag)
 				{
 					fprintf(stderr, "\033[1;32m");//글자색을 녹색으로 변경
@@ -65,13 +74,7 @@ int main(int argc, char *argv[]) {
 				}
 				else
 				{
-					fprintf(stderr, "\033[1;32m");//글자색을 녹색으로 변경
-					puts("commend list --------------");
-        				puts("방 참가 : in (방 번호)");
-        				puts("방 만들기 : mk (방 제목)");
-					puts("---------------------------");
-					puts("*ROBBY*");
-					fprintf(stderr, "\033[1;37m");//글자색을 white으로 변경
+
 				}
 			}
 		}

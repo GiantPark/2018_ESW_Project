@@ -29,6 +29,7 @@ char *ROOM_STRING = "There is no room, create room plz \n";
 char *ROOM_IN = "goin";
 char *ROOM_OUT = "goout";
 char *ROOM_NO = "There is no such room\n";
+char *ROOM_LIST = "___ROOM LIST___\n";
 
 // 클라이언트 환영 메시지
 int maxfdp1;				// 최대 소켓번호 +1
@@ -42,8 +43,7 @@ int room[MAX_ROOM][MAX_PERSON]={0,};
 int roomcnt = 0;
 int personcnt[MAX_ROOM] ={0,};
 char *room_N[MAX_ROOM]={NULL,};
-char bufall[MAXLINE+1];
-
+char bufall[MAXLINE];
 							// 새로운 채팅 참가자 처리
 void addClient(int s, struct sockaddr_in *newcliaddr);
 int getmax();				// 최대 소켓 번호 찾기
@@ -76,7 +76,6 @@ int main(int argc, char *argv[]) {
 	listen_sock = tcp_listen(INADDR_ANY, atoi(argv[1]), 5);
 	//스레드 생성
 	pthread_create(&a_thread, NULL, thread_function, (void *)NULL);
-	int PSH_CNT = 2;
 	while (1) {
 		FD_ZERO(&read_fds);
 		FD_SET(listen_sock, &read_fds);
@@ -99,10 +98,10 @@ int main(int argc, char *argv[]) {
                         	send(accp_sock, ROOM_STRING ,strlen(ROOM_STRING), 0);
                         }
 			else{
+				send(accp_sock, ROOM_LIST, strlen(ROOM_LIST), 0);
 				for(int r=0;r<roomcnt;r++){
 					printf("room_N[%d]is = %s\n",r,room_N[r]);
-					sprintf(bufall,"%s%s",room_N[r],"\n");
-					send(accp_sock, bufall , strlen(bufall), 0);
+					send(accp_sock, room_N[r], strlen(room_N[r]), 0);
 				}
 			}
 			ct = time(NULL);			//현재 시간을 받아옴
@@ -133,11 +132,13 @@ int main(int argc, char *argv[]) {
 					removeClient(i);	// 클라이언트의 종료
 					continue;
 				}
-				char *temp = strtok(buf," ");
-				if(strcmp(temp,"mk")==0){
+				//char *temp = strtok(buf," ");
+				//if(strcmp(temp,"mk")==0){
+				if(strstr(buf,"mk ")==buf){
                                         room[roomcnt][personcnt[roomcnt]] = clisock_list[i];
 					//printf("clisock_list = %d\n",clisock_list[i]);
 					//printf("room count = %d\n",roomcnt);
+					char *temp = strtok(buf," ");
                                         temp = strtok(NULL," ");
 					//printf("temp is = %s and roomcnt is = %d\n",temp,roomcnt);
 					strcpy(room_N[roomcnt],temp);
@@ -147,7 +148,9 @@ int main(int argc, char *argv[]) {
 					temp = NULL;
 					continue;
                                 }
-				else if(strcmp(temp,"in")==0){
+				//else if(strcmp(temp,"in")==0){
+				else if(strstr(buf,"in ")==buf){
+					char *temp = strtok(buf," ");
 					temp = strtok(NULL," ");
 					for (int z =0 ; z < roomcnt ; z++)
 					{
@@ -169,7 +172,9 @@ int main(int argc, char *argv[]) {
 					}
 					continue;
                                 }
-				else if(strcmp(temp,"!out")==0){
+				//else if(strcmp(temp,"!out")==0){
+				else if(strstr(buf,"!out ")==buf){
+					char *temp = strtok(buf," ");
 					for(int z = 0 ; z < roomcnt ; z++){
 						for(int y=0; y<personcnt[z]; y++){
 							if(room[z][y] == clisock_list[i]){

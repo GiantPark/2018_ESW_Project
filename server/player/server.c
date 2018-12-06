@@ -138,13 +138,11 @@ int main(int argc, char *argv[]) {
 					printf("temp is = %s and roomcnt is = %d\n",temp,roomcnt);
 					//room_N[roomcnt] = temp;
 					strcpy(room_N[roomcnt],temp);
-
 					printf("room_N length = %ld\n", sizeof(room_N));
 					printf("room_N[%d] = %s\n",0,room_N[0]);
 					printf("room_N[%d] = %s\n",1,room_N[1]);
 					printf("room_N[%d] = %s\n",2,room_N[2]);
 					printf("room_N[%d] = %s\n",3,room_N[3]);
-
                                         personcnt[roomcnt]++;
                                         roomcnt++;
 					send(clisock_list[i], ROOM_IN,strlen(ROOM_IN), 0);
@@ -155,6 +153,7 @@ int main(int argc, char *argv[]) {
 					temp = strtok(NULL," ");
 					for (int z =0 ; z < roomcnt ; z++)
 					{
+						printf("shebar!!!!\n");
 						if(strcmp(room_N[z],temp))
 						{
                                         		room[z][personcnt[z]] = clisock_list[i];

@@ -65,7 +65,6 @@ int main(int argc, char *argv[]) {
 				}
 				else
 				{
-					printf("\n");
 					fprintf(stderr, "\033[1;32m");//글자색을 녹색으로 변경
 					puts("commend list --------------");
         				puts("방 참가 : in (방 번호)");

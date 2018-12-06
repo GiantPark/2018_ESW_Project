@@ -33,21 +33,12 @@ int num_chat = 0;			// 지금까지 오간 대화의 수
 int clisock_list[MAX_SOCK];		// 채팅에 참가자 소켓번호 목록
 char ip_list[MAX_SOCK][20];		//접속한 ip목록
 int listen_sock;			// 서버의 리슨 소켓
-<<<<<<< HEAD
+
 int room[MAX_ROOM][MAX_PERSON]={0,};
 int roomcnt = 0;
 int personcnt[MAX_ROOM] ={0,};
-char *room_N[MAX_ROOM]={0,};
+char *room_N[MAX_ROOM] ={NULL,};
 
-							// 새로운 채팅 참가자 처리
-=======
-
-int room[MAX_ROOM][MAX_PERSON] = {0,};
-int roomcnt = 0;
-int personcnt[MAX_ROOM] ={0,};
-char *room_N[MAX_ROOM] = {0,};
-						// 새로운 채팅 참가자 처리
->>>>>>> a80458faad9b27ed8c7675d6b2f89f0a594727db
 void addClient(int s, struct sockaddr_in *newcliaddr);
 int getmax();				// 최대 소켓 번호 찾기
 void removeClient(int s);	// 채팅 탈퇴 처리 함수
@@ -116,19 +107,7 @@ int main(int argc, char *argv[]) {
 				nbyte = recv(clisock_list[i], buf, MAXLINE, 0);
 
 				char *temp = strtok(buf," ");
-<<<<<<< HEAD
-				if(strcmp(temp,"mk")==0){
-					room[roomcnt][personcnt[roomcnt]] = clisock_list[i];
-					room_N[roomcnt] = strtok(NULL," ");
-					personcnt[roomcnt]++;
-					roomcnt++;
-				}
-				else if(strcmp(temp,"in")==0){
-				
-				}
-=======
 
->>>>>>> a80458faad9b27ed8c7675d6b2f89f0a594727db
 				if (nbyte <= 0) {
 					removeClient(i);	// 클라이언트의 종료
 					continue;
@@ -141,23 +120,36 @@ int main(int argc, char *argv[]) {
 				}
 				if(strcmp(temp,"mk")==0){
                                         room[roomcnt][personcnt[roomcnt]] = clisock_list[i];
-                                        room_N[roomcnt] = strtok(NULL," ");
+					room_N[roomcnt] = strtok(NULL," ");
+					printf("%s\n",room_N[0]);
+					printf("%s\n",room_N[1]);
+					printf("%s\n",room_N[2]);
+					printf("%s\n",room_N[3]);
                                         personcnt[roomcnt]++;
                                         roomcnt++;
                                 }
-				if(strcmp(temp,"in")==0){
-
+				else if(strcmp(temp,"in")==0){
+				
                                 }
 
+				else{
+					for(int a = 0; a < roomcnt ; a++){
+						for(int b = 0; b < personcnt[a]; b++){
+							if(room[a][b] == clisock_list[i]){
+							// 모든 채팅 참가자에게 메시지 방송
+                                       				for (int c = 0; c < personcnt[a]; c++)
+                                     					send(room[a][c], buf, nbyte, 0);
 
-				// 모든 채팅 참가자에게 메시지 방송
-				for (j = 0; j < num_user; j++)
-					send(clisock_list[j], buf, nbyte, 0);
-				printf("\033[0G");		//커서의 X좌표를 0으로 이동
-				fprintf(stderr, "\033[97m");//글자색을 흰색으로 변경
-				printf("%s", buf);			//메시지 출력
-				fprintf(stderr, "\033[32m");//글자색을 녹색으로 변경
-				fprintf(stderr, "server>"); //커서 출력
+							}
+						}
+					}
+					// 모든 채팅 참가자에게 메시지 방송
+					printf("\033[0G");		//커서의 X좌표를 0으로 이동
+					fprintf(stderr, "\033[97m");//글자색을 흰색으로 변경
+					printf("%s", buf);			//메시지 출력
+					fprintf(stderr, "\033[32m");//글자색을 녹색으로 변경
+					fprintf(stderr, "server>"); //커서 출력
+				}
 			}
 		}
 

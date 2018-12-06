@@ -150,11 +150,11 @@ int main(int argc, char *argv[]) {
 					continue;
                                 }
 				else if(strcmp(temp,"in")==0){
-					temp = strtok(NULL," ");
+					temp = strtok(NULL,"\n");
 					for (int z =0 ; z < roomcnt ; z++)
 					{
 						printf("shebar!!!!\n");
-						if(strcmp(room_N[z],temp))
+						if(strcmp(room_N[z],temp)==0)
 						{
                                         		room[z][personcnt[z]] = clisock_list[i];
                                         		personcnt[z]++;

@@ -40,7 +40,7 @@ server로 동작할 PC는 한 대만 있으면 가능하고 server와 관련된 
 ./server 9999 //port 번호
 ```
 
-###클라이언트 부분 Library 이름과 동작 기능
+### 클라이언트 부분 Library 이름과 동작 기능
 
 1)client_tcp_connect.c : 서버와의 tcp_connect 설정
 

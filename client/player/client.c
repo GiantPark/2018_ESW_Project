@@ -47,6 +47,7 @@ int main(int argc, char *argv[]) {
 	puts("commend list --------------");
         puts("방 참가 : in (방 번호)");
         puts("방 만들기 : mk (방 제목)");
+        puts("방 리스트: rl");
 	puts("---------------------------");
 	puts("*ROBBY*");
 	fprintf(stderr, "\033[1;37m");//글자색을 white으로 변경

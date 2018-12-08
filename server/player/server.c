@@ -173,8 +173,8 @@ int main(int argc, char *argv[]) {
 					continue;
                                 }
 				//else if(strcmp(temp,"!out")==0){
-				else if(strstr(buf,"!out ")==buf){
-					char *temp = strtok(buf," ");
+				else if(strstr(buf,"!out")!=NULL){
+					//char *temp = strtok(buf," ");
 					for(int z = 0 ; z < roomcnt ; z++){
 						for(int y=0; y<personcnt[z]; y++){
 							if(room[z][y] == clisock_list[i]){

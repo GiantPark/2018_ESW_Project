@@ -173,6 +173,19 @@ int main(int argc, char *argv[]) {
 					}
 					continue;
                                 }
+				else if(strstr(buf,"rl")!=NULL){
+					if(roomcnt == 0){
+                        			send(clisock_list[i], ROOM_STRING ,strlen(ROOM_STRING), 0);
+                        		}
+					else{
+						send(clisock_list[i], ROOM_LIST, strlen(ROOM_LIST), 0);
+						for(int r=0;r<roomcnt;r++){
+							printf("room_N[%d]is = %s\n",r,room_N[r]);
+							send(clisock_list[i], room_N[r], strlen(room_N[r]), 0);
+						}
+					}
+					continue;
+				}
 				//else if(strcmp(temp,"!out")==0){
 				else if(strstr(buf,OUT)!=NULL){
 					for(int z = 0 ; z < roomcnt ; z++){

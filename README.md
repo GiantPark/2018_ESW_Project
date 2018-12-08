@@ -39,6 +39,8 @@ server로 동작할 PC는 한 대만 있으면 가능하고 server와 관련된 
 ```
 ./server 9999 //port 번호
 ```
+### 서버 명령어
+
 
 ### 클라이언트 부분 Library 이름과 동작 기능
 
@@ -56,4 +58,14 @@ server로 동작할 PC는 한 대만 있으면 가능하고 server와 관련된 
 ```
 ./client (server IP) (port number) (nick name)
 ```
+### 클라이언트 명령어
+```
+mk (room name)
+in (room name)
+rl
+```
+mk (방 이름) : 입력한 방 이름으로 방을 생성합니다.
+in (방 이름) : 입력한 방으로 입장합니다.
+rl : (room list) 방의 목록을 보여줍니다.
+
 ### 결과

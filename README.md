@@ -24,7 +24,7 @@ server로 동작할 PC는 한 대만 있으면 가능하고 server와 관련된 
 
 1)addclient.c : 새로운 채팅 참가자 처리 -> 채팅 클라이언트 목록에 추가, 유저 수 증가
 
-2)getmax.x : 최대 소켓번호 찾기
+2)getmax.c : 최대 소켓번호 찾기
 
 3)removeclient.c : 채팅 탈퇴 처리 -> 저장된 리스트 재배열, 유저 수 감소
 
@@ -40,10 +40,20 @@ server로 동작할 PC는 한 대만 있으면 가능하고 server와 관련된 
 ./server 9999 //port 번호
 ```
 
-클라이언트 부분 Library 이름과 동작 기능
+###클라이언트 부분 Library 이름과 동작 기능
+
+1)client_tcp_connect.c : 서버와의 tcp_connect 설정
 
 클라이언트 부분 main source 동작 기능
 
-클라이언트 실행 명령어
+1)서버로 메세지 전달
 
+2)서버에서 받은 메세지 처리 (방 입장 여부에 따라 글자색을 바꿔줌)
+
+3)각종 유저 명령어 출력
+
+클라이언트 실행 명령어
+```
+./client (server IP) (port number) (nick name)
+```
 결과

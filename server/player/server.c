@@ -169,7 +169,6 @@ int main(int argc, char *argv[]) {
 					else{
 						send(clisock_list[i], ROOM_LIST, strlen(ROOM_LIST), 0);
 						for(int r=0;r<roomcnt;r++){
-							printf("room_N[%d]is = %s\n",r,room_N[r]);
 							send(clisock_list[i], room_N[r], strlen(room_N[r]), 0);
 						}
 					}

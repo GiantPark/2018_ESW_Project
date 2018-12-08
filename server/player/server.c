@@ -30,6 +30,7 @@ char *ROOM_IN = "goin";
 char *ROOM_OUT = "goout";
 char *ROOM_NO = "There is no such room\n";
 char *ROOM_LIST = "___ROOM LIST___\n";
+char *OUT = "!out";
 
 // 클라이언트 환영 메시지
 int maxfdp1;				// 최대 소켓번호 +1
@@ -173,8 +174,7 @@ int main(int argc, char *argv[]) {
 					continue;
                                 }
 				//else if(strcmp(temp,"!out")==0){
-				else if(strstr(buf,"!out")!=NULL){
-					//char *temp = strtok(buf," ");
+				else if(strstr(buf,OUT)!=NULL){
 					for(int z = 0 ; z < roomcnt ; z++){
 						for(int y=0; y<personcnt[z]; y++){
 							if(room[z][y] == clisock_list[i]){
@@ -186,6 +186,7 @@ int main(int argc, char *argv[]) {
 							}
 						}
 					}
+					continue;
 				}
 
 				else{

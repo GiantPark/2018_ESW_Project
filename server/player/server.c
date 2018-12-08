@@ -73,7 +73,6 @@ int main(int argc, char *argv[]) {
 		printf("사용법 :%s port\n", argv[0]);
 		exit(0);
 	}
-	// tcp_listen(host, port, backlog) 함수 호출
 	listen_sock = tcp_listen(INADDR_ANY, atoi(argv[1]), 5);
 	//스레드 생성
 	pthread_create(&a_thread, NULL, thread_function, (void *)NULL);
@@ -101,7 +100,7 @@ int main(int argc, char *argv[]) {
 			else{
 				send(accp_sock, ROOM_LIST, strlen(ROOM_LIST), 0);
 				for(int r=0;r<roomcnt;r++){
-					printf("room_N[%d]is = %s\n",r,room_N[r]);
+					//printf("room_N[%d]is = %s\n",r,room_N[r]);
 					send(accp_sock, room_N[r], strlen(room_N[r]), 0);
 				}
 			}
@@ -111,7 +110,6 @@ int main(int argc, char *argv[]) {
 			printf("[%02d:%02d:%02d]", tm.tm_hour, tm.tm_min, tm.tm_sec);
 			fprintf(stderr, "\033[33m");//글자색을 노란색으로 변경
 			printf("사용자 1명 추가. 현재 참가자 수 = %d\n", num_user);
-			printf("cnt = %d\n",roomcnt);
 			fprintf(stderr, "\033[32m");//글자색을 녹색으로 변경
 			fprintf(stderr, "\n");
 			fprintf(stderr, "server>"); //커서 출력
@@ -133,15 +131,10 @@ int main(int argc, char *argv[]) {
 					removeClient(i);	// 클라이언트의 종료
 					continue;
 				}
-				//char *temp = strtok(buf," ");
-				//if(strcmp(temp,"mk")==0){
 				if(strstr(buf,"mk ")==buf){
                                         room[roomcnt][personcnt[roomcnt]] = clisock_list[i];
-					//printf("clisock_list = %d\n",clisock_list[i]);
-					//printf("room count = %d\n",roomcnt);
 					char *temp = strtok(buf," ");
                                         temp = strtok(NULL," ");
-					//printf("temp is = %s and roomcnt is = %d\n",temp,roomcnt);
 					strcpy(room_N[roomcnt],temp);
                                         personcnt[roomcnt]++;
                                         roomcnt++;
@@ -149,7 +142,6 @@ int main(int argc, char *argv[]) {
 					temp = NULL;
 					continue;
                                 }
-				//else if(strcmp(temp,"in")==0){
 				else if(strstr(buf,"in ")==buf){
 					char *temp = strtok(buf," ");
 					temp = strtok(NULL," ");
@@ -159,9 +151,6 @@ int main(int argc, char *argv[]) {
 						{
                                         		room[z][personcnt[z]] = clisock_list[i];
                                         		personcnt[z]++;
-							//for(int d = 0; d < personcnt[z]; d++){
-							//	printf("room[%d][%d] = %d\n",z,d,room[z][d]);
-							//}
 							send(clisock_list[i], ROOM_IN,strlen(ROOM_IN), 0);
 							room_in_f = 1;
 							break;
@@ -186,7 +175,6 @@ int main(int argc, char *argv[]) {
 					}
 					continue;
 				}
-				//else if(strcmp(temp,"!out")==0){
 				else if(strstr(buf,OUT)!=NULL){
 					for(int z = 0 ; z < roomcnt ; z++){
 						for(int y=0; y<personcnt[z]; y++){
@@ -220,13 +208,6 @@ int main(int argc, char *argv[]) {
 							}
 						}
 					}
-					//모든 채팅 참가자에게 메시지 방송
-					//printf("\033[0G");		//커서의 X좌표를 0으로 이동
-					//fprintf(stderr, "\033[97m");//글자색을 흰색으로 변경
-					//printf("%s", buf);			//메시지 출력
-					//fprintf(stderr, "\033[32m");//글자색을 녹색으로 변경
-					//fprintf(stderr, "\n");
-					//fprintf(stderr, "server>"); //커서 출력
 				}
 			}
 		}

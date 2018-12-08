@@ -72,4 +72,4 @@ rl : (room list) 방의 목록을 보여줍니다.
 
 ### 결과
 
-![client](./img/client.PNG)
+![client](./img/client 1.PNG)

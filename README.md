@@ -16,16 +16,34 @@ server로 동작할 PC는 한 대만 있으면 가능하고 server와 관련된 
 
 그리고 각 폴더의 구성은
 
-![makefile](C://Users/일구칠/Desktop/makefile.png)
+
 
 이런식으로 lib, include, player 폴더를 각각 만들어서 lib에는 헤더파일로 만들 함수들의 소스코드와 Makefile, include에는 헤더파일들, player에는 main문과 Makefile을 넣었습니다.
 
 서버부분 Library 이름과 동작 기능
 
+1)addclient.c : 새로운 채팅 참가자 처리 -> 채팅 클라이언트 목록에 추가, 유저 수 증가
+
+2)getmax.x : 최대 소켓번호 찾기
+
+3)removeclient.c : 채팅 탈퇴 처리 -> 저장된 리스트 재배열, 유저 수 감소
+
+4)tcp_listen.c : listen 소켓 생성 및 listen -> 클라이언트로부터 연결요청을 기다림
+
+5)thread.c : 명령어를 처리할 스레드 -> 서버가 명령어를 쓰면 그 명령어에 맞는 출력을 해줌
+
 서버부분 main source 동작 기능
+
+서버 실행 명령어
+
+```
+./server 9999 //port 번호
+```
 
 클라이언트 부분 Library 이름과 동작 기능
 
 클라이언트 부분 main source 동작 기능
+
+클라이언트 실행 명령어
 
 결과

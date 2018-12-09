@@ -16,7 +16,7 @@ server로 동작할 PC는 한 대만 있으면 가능하고 server와 관련된 
 
 ### 각 폴더의 구성
 
-![전체구조](./img/전체구조.PNG)
+![file](./img/file.PNG)
 
 lib, include, player 폴더를 각각 만들어서 lib에는 헤더파일로 만들 함수들의 소스코드와 Makefile, include에는 헤더파일들, player에는 main문과 Makefile을 넣었습니다.
 
@@ -94,8 +94,8 @@ rl : (room list) 방의 목록을 보여줍니다.
 
 2. server
 
-![서버 연결](./img/서버 연결.PNG)
+![server_link](./img/sever_link.PNG)
 
-![다른 클라이언트와 대화](./img/다른 클라이언트와 대화.PNG)
+![Client_chat](./img/Client_chat.PNG)
 
-![서버 명령어들](./img/서버 명령어들.PNG)
+![server_commend](./img/server_commend.PNG)

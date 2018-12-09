@@ -14,11 +14,11 @@ server와 client가 확실하게 나누어져 있기 때문에 한 사람은 ser
 server로 동작할 PC는 한 대만 있으면 가능하고 server와 관련된 파일들만 있으면 되기때문에 server폴더와 client폴더를 따로 생성 했습니다.
 이렇게 만들면 client동작을 할 PC들도 client와 관련된 파일들만 다운받아 사용할 수 있기 때문입니다.
 
-그리고 각 폴더의 구성은
+### 각 폴더의 구성
 
+![전체구조](./img/전체구조.PNG)
 
-
-이런식으로 lib, include, player 폴더를 각각 만들어서 lib에는 헤더파일로 만들 함수들의 소스코드와 Makefile, include에는 헤더파일들, player에는 main문과 Makefile을 넣었습니다.
+lib, include, player 폴더를 각각 만들어서 lib에는 헤더파일로 만들 함수들의 소스코드와 Makefile, include에는 헤더파일들, player에는 main문과 Makefile을 넣었습니다.
 
 ### 서버부분 Library 이름과 동작 기능
 
@@ -34,13 +34,29 @@ server로 동작할 PC는 한 대만 있으면 가능하고 server와 관련된 
 
 ### 서버부분 main source 동작 기능
 
+1)Client가 접속하면 현재 만들어져 있는 방의 목록을 전송
+
+2)Client가 방을 나가면 저장되어있던 클라이언트의 소켓번호를 제거 -> 제거한 공간으로 나머지 정보 당겨서 저장
+
+3)각 명령어(mk, in, !out, exit)들을 구분하여 상황에 맞는 메시지를 전송
+
+4)같은 방의 Client들에게만 메시지 전송 -> 다른 방의 Client들은 확인 불가
+
 ### 서버 실행 명령어
 
 ```
-./server 9999 //port 번호
+./server (port 번호)
 ```
+
 ### 서버 명령어
 
+1)help : 명령어 목록 출력
+
+2)num_user : 현재 참가자 수 출력
+
+3)num_chat : 지금까지 오간 대화의 수 출력
+
+4)ip_list : 현재 접속중인 Client들의 ip
 
 ### 클라이언트 부분 Library 이름과 동작 기능
 
@@ -72,4 +88,14 @@ rl : (room list) 방의 목록을 보여줍니다.
 
 ### 결과
 
+1. client
+
 ![client](./img/client_1.PNG)
+
+2. server
+
+![서버 연결](./img/서버 연결.PNG)
+
+![다른 클라이언트와 대화](./img/다른 클라이언트와 대화.PNG)
+
+![서버 명령어들](./img/서버 명령어들.PNG)
